@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
 app = Flask(__name__)
 
@@ -21,7 +22,7 @@ def showLogin():
                     for x in xrange(32))
     login_session['state'] = state
     # return "The current session state is %s" %login_session['state']
-    return render_template('login.html')
+    return render_template('login.html', clientId=os.environ.get('GOOGLE_CLIENT_ID'), STATE=state)
 #JSON APIs to view Restaurant Information
 @app.route('/restaurant/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
