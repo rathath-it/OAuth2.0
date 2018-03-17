@@ -1,3 +1,4 @@
+#!/bin/bash -xe
 apt-get -qqy update
 DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 apt-get -qqy install postgresql python-psycopg2
