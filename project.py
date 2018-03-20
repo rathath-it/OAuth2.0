@@ -208,7 +208,7 @@ def restaurantsJSON():
 @app.route('/')
 @app.route('/restaurant/')
 def showRestaurants():
-  restaurants = session.query(Restaurant).order_by(asc(Resta  urant.name))
+  restaurants = session.query(Restaurant).order_by(asc(Restaurant.name))
   return render_template('restaurants.html' if 'username' not in login_session else 'publicrestaurants.html', restaurants = restaurants)
 
 #Create a new restaurant
@@ -246,8 +246,8 @@ def deleteRestaurant(restaurant_id):
   restaurantToDelete = session.query(Restaurant).filter_by(id = restaurant_id).one()
   if (is_guest()):
       return redirect('/login')
-  if (!is_owner(restaurantToDelete)):
-      return "Hello.. You are not the owner of this restaurant"        
+  if (not is_owner(restaurantToDelete)):
+      return "Hello.. You are not the owner of this restaurant"
   if request.method == 'POST':
     session.delete(restaurantToDelete)
     flash('%s Successfully Deleted' % restaurantToDelete.name)
@@ -263,8 +263,7 @@ def showMenu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     owner = getUserInfo(restaurant.user_id)
     items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
-    is_public = 'username' not in login_session or owner.id
-                           != login_session['user_id']
+    is_public = is_guest() or not is_owner(restaurant)
     return render_template(('publicmenu.html' if is_public else 'menu.html'
                            ), items=items, restaurant=restaurant, creator= None if is_public else owner)
 
