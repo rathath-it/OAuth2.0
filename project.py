@@ -100,7 +100,7 @@ def google_connect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
-
+    createUserIfNotExist(login_session)
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -135,6 +135,13 @@ def getUserID(email):
         return user.id
     except:
         return None
+
+def createUserIfNotExist(login_session):
+    user_id = getUserID(login_session['email'])
+    if (user_id is None):
+        return createUser(login_session)
+    else:
+        return user_id
 # Logout : https://github.com/udacity/ud330/blob/master/Lesson2/step6/project.py
 
 @app.route('/gdisconnect')
