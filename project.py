@@ -16,7 +16,7 @@ import json
 from flask import make_response
 import requests
 #Connect to Database and create database session
-engine = create_engine('sqlite:///restaurantmenu.db')
+engine = create_engine('sqlite:///restaurantmenuwithusers.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -174,7 +174,7 @@ def showRestaurants():
 #Create a new restaurant
 @app.route('/restaurant/new/', methods=['GET','POST'])
 def newRestaurant():
-  #authorization    
+  #authorization
   if 'username' not in login_session:
      return redirect('/login')
 
